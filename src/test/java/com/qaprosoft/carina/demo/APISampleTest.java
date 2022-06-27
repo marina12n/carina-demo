@@ -79,7 +79,7 @@ public class APISampleTest implements IAbstractTest {
         GetUserMethods getUsersMethods = new GetUserMethods();
         getUsersMethods.callAPIExpectSuccess();
         getUsersMethods.validateResponse(JSONCompareMode.STRICT, JsonCompareKeywords.ARRAY_CONTAINS.getKey());
-        getUsersMethods.validateResponseAgainstSchema("api/users/_get/rs.schema");
+        getUsersMethods.validateResponseAgainstSchema("api/weather/_get/rs.schema");
     }
 
     @Test()
