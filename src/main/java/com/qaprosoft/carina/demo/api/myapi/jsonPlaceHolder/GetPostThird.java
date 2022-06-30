@@ -1,4 +1,4 @@
-package com.qaprosoft.carina.demo.api.myapi;
+package com.qaprosoft.carina.demo.api.myapi.jsonPlaceHolder;
 
 import com.qaprosoft.carina.core.foundation.api.AbstractApiMethodV2;
 import com.qaprosoft.carina.core.foundation.api.annotation.Endpoint;
@@ -8,10 +8,12 @@ import com.qaprosoft.carina.core.foundation.api.http.HttpMethodType;
 import com.qaprosoft.carina.core.foundation.api.http.HttpResponseStatusType;
 import com.qaprosoft.carina.core.foundation.utils.Configuration;
 
-@Endpoint(url = "https://api.openweathermap.org/data/3.0/onecall?lat=33.44&lon=-94.04&exclude=hourly,daily&appid=80a6cced4c0078486f1fb1820263b9cc",
-        methodType = HttpMethodType.GET)
-@ResponseTemplatePath(path = "api/weather/_get/rs.json")
+@Endpoint(url = "${base_url}/posts/3", methodType = HttpMethodType.GET)
+@ResponseTemplatePath(path = "api/jsonPlaceHolder/get/getPostThird/rs.json")
 @SuccessfulHttpStatus(status = HttpResponseStatusType.OK_200)
-public class GetWeather extends AbstractApiMethodV2 {
-    public GetWeather(){replaceUrlPlaceholder("base_url", Configuration.getEnvArg("api_url"));}
+
+public class GetPostThird extends AbstractApiMethodV2 {
+    public GetPostThird() {
+        replaceUrlPlaceholder("base_url", Configuration.getEnvArg("api_url"));
+    }
 }

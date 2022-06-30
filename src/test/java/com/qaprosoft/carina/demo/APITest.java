@@ -64,19 +64,43 @@ public class APITest implements IAbstractTest {
         api.validateResponse();
     }
 
-//    @Test
-//    public void testDeleteSecond() {
-//        DeleteSecondMethod api = new DeleteSecondMethod();
-//        api.callAPIExpectSuccess();
-//        api.expectResponseStatus(HttpResponseStatusType.OK_200);
-//        api.validateResponse();
-//    }
+    @Test
+    public void testGetCommentsPost() {
+        GetCommentsPost api = new GetCommentsPost();
+        api.callAPIExpectSuccess();
+        api.expectResponseStatus(HttpResponseStatusType.OK_200);
+        api.validateResponse();
+    }
 
-    //    @Test()
+    @Test
+    public void testGetPostThird() {
+        GetPostThird api = new GetPostThird();
+        api.callAPIExpectSuccess();
+        api.expectResponseStatus(HttpResponseStatusType.OK_200);
+        api.validateResponse();
+    }
+
+    @Test
+    public void testDeleteSecond() {
+        DeleteSecondMethod api = new DeleteSecondMethod();
+        api.callAPIExpectSuccess();
+        api.expectResponseStatus(HttpResponseStatusType.OK_200);
+        api.validateResponse();
+    }
+
+    @Test
+    public void testDeleteThird() {
+        DeleteThirdMethod api = new DeleteThirdMethod();
+        api.callAPIExpectSuccess();
+        api.expectResponseStatus(HttpResponseStatusType.OK_200);
+        api.validateResponse();
+    }
+
+//    @Test()
 //    public void testGetWeather() {
-//        GetWeather api = new GetWeather();
-//        api.callAPIExpectSuccess();
-//        api.validateResponse(JSONCompareMode.STRICT, JsonCompareKeywords.ARRAY_CONTAINS.getKey());
-//        api.validateResponseAgainstSchema("api/weather/_get/rs.schema");
-//    }
+//      GetWeather api = new GetWeather();
+//      api.callAPIExpectSuccess();
+//      api.validateResponse(JSONCompareMode.STRICT, JsonCompareKeywords.ARRAY_CONTAINS.getKey());
+//      api.validateResponseAgainstSchema("api/weather/_get/rs.schema");
+//}
 }

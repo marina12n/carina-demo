@@ -10,8 +10,8 @@ import com.qaprosoft.carina.core.foundation.api.http.HttpResponseStatusType;
 import com.qaprosoft.carina.core.foundation.utils.Configuration;
 
 @Endpoint(url = "${base_url}/posts/1", methodType = HttpMethodType.DELETE)
-@RequestTemplatePath(path = "api/jsonPlaceHolder/delete/rq.json")
-@ResponseTemplatePath(path = "api/jsonPlaceHolder/delete/rs.json")
+@RequestTemplatePath(path = "api/jsonPlaceHolder/delete/deleteTest/rq.json")
+@ResponseTemplatePath(path = "api/jsonPlaceHolder/delete/deleteTest/rs.json")
 @SuccessfulHttpStatus(status = HttpResponseStatusType.OK_200)
 public class DeleteMethod extends AbstractApiMethodV2 {
 

@@ -45,7 +45,7 @@ public class MyHomePage extends AbstractPage {
     }
 
     public boolean verifyLocationLoginBtn() {
-        return loginBtn.getLocation().y < password.getLocation().y;
+        return loginBtn.getLocation().y > password.getLocation().y;
     }
 
     public boolean verifyLocationUserName() {

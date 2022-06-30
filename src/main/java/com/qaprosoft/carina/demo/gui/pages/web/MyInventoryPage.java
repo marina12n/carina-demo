@@ -1,14 +1,15 @@
 package com.qaprosoft.carina.demo.gui.pages.web;
 
+import com.google.common.collect.Ordering;
 import com.qaprosoft.carina.core.foundation.webdriver.decorator.ExtendedWebElement;
 import com.qaprosoft.carina.core.gui.AbstractPage;
-import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MyInventoryPage extends AbstractPage {
@@ -26,29 +27,27 @@ public class MyInventoryPage extends AbstractPage {
     @FindBy(xpath = "//button[contains(@id,'add-to-cart')]")
     private ExtendedWebElement addToCart;
 
-    @FindBy(xpath = "//button[contains(@id,'add-to-cart')]")
+    @FindBy(xpath = "//*[./*[./*[text()= '%s']]]/following-sibling::*/*[contains(@class, 'btn btn_primary btn_small btn_inventory')]")
     private List<ExtendedWebElement> addToCartBtns;
 
-    @FindBy(xpath = "//*[@id=\"inventory_container\"]/div/div[1]")
-    private ExtendedWebElement inventoryItem;
+    @FindBy(xpath = "//*[@class='inventory_item']")
+    private List<ExtendedWebElement> inventoryItems;
 
     @FindBy(className = "shopping_cart_link")
     private ExtendedWebElement cartLink;
 
-    @FindBy(className = "product_sort_container")
+    @FindBy(xpath = "//*[@class='product_sort_container']")
     private ExtendedWebElement dropDownMenu;
 
-    @FindBy(xpath = "//option[@value='az']")
-    private ExtendedWebElement sortItemAZ;
+    @FindBy(xpath = "//*[@class='product_sort_container']//*[@value='%s']")
+    private ExtendedWebElement dropDownValue;
 
-    @FindBy(xpath = "//option[@value='za']")
-    private ExtendedWebElement sortItemZA;
 
-    @FindBy(xpath = "//option[@value='lohi']")
-    private ExtendedWebElement sortItemLH;
+    @FindBy(xpath = "//*[@class='inventory_item_price']")
+    private List<ExtendedWebElement> itemPrices;
 
-    @FindBy(xpath = "//option[@value='hilo']")
-    private ExtendedWebElement sortItemHL;
+    @FindBy(xpath = "//*[@class='active_option']")
+    private ExtendedWebElement activeOption;
 
     public MyInventoryPage(WebDriver driver) {
         super(driver);
@@ -64,7 +63,6 @@ public class MyInventoryPage extends AbstractPage {
     }
 
     public boolean isAddToCartBtnExist() {
-        LOGGER.info("Check if button exist on the product");
         return addToCart.isElementPresent();
     }
 
@@ -72,13 +70,18 @@ public class MyInventoryPage extends AbstractPage {
         return cartLink.isElementPresent();
     }
 
-    public boolean isProductInventoryItemExist() {
-        return inventoryItem.isElementPresent();
+    public boolean isActiveOptionExist() {
+        return activeOption.isElementPresent();
     }
 
     public boolean isDropDownMenuExist() {
         return dropDownMenu.isElementPresent();
     }
+
+    public boolean isDropDownValueExist(){
+        return dropDownValue.isElementPresent();
+    }
+
 
     public MyCartPage clickCartIcon() {
         cartLink.click();
@@ -89,30 +92,55 @@ public class MyInventoryPage extends AbstractPage {
         return dropDownMenu.getSelectedValue();
     }
 
-    public boolean clickAddToCart(int index){
-        addToCartBtns.get(index).click();
-        return StringUtils.equalsIgnoreCase(addToCartBtns.get(index).getText(), "remove");
+
+    public String getActiveOptionValue(){
+        return activeOption.getText();
     }
 
-    public boolean isDropDownFilterAZPresent(){
-        return sortItemAZ.isElementPresent();
+    public void clickAddToCart(){
+        addToCart.click();
     }
 
-    public boolean isDropDownFilterZAPresent(){
-        return sortItemZA.isElementPresent();
+    public void clickSortDropDown(){
+        LOGGER.info("Drop Down menu is clicked");
+        dropDownMenu.click();
     }
 
-    public boolean isDropDownFilterHLPresent(){
-        return sortItemHL.isElementPresent();
+    public void clickDropDownValue(String value) {
+        LOGGER.info("Drop down value is: " + value);
+        dropDownValue.format(value).click();
     }
 
-    public boolean isDropDownFilterLHPresent(){
-        return sortItemLH.isElementPresent();
+    public boolean verifyAlphabeticalOrder() {
+        List<String> sortedItem = new ArrayList<>();
+        for (ExtendedWebElement item: inventoryItems) {
+            sortedItem.add(String.valueOf(item.getText().charAt(0)));
+        }
+        return Ordering.natural().isOrdered(sortedItem);
     }
 
-    public String selectNonDefaultDropDownValue(String selectedOption){
-        String value = "sortItem" + selectedOption;
-        
-        return "Selected Value: ";
+    public boolean verifyReverseAlphabeticalOrder() {
+        List<String> sortedItem = new ArrayList<>();
+        for (ExtendedWebElement item: inventoryItems) {
+            sortedItem.add(String.valueOf(item.getText().charAt(0)));
+        }
+        return Ordering.natural().reverse().isOrdered(sortedItem);
     }
+
+    public boolean verifyPriceLowToHigh() {
+        List<Double> sortedItem = new ArrayList<>();
+        for (ExtendedWebElement item: itemPrices) {
+            sortedItem.add(Double.parseDouble(item.getText().substring(1)));
+        }
+        return Ordering.natural().isOrdered(sortedItem);
+    }
+
+    public boolean verifyPriceHighToLow() {
+        List<Double> sortedItem = new ArrayList<>();
+        for (ExtendedWebElement item: itemPrices) {
+            sortedItem.add(Double.parseDouble(item.getText().substring(1)));
+        }
+        return Ordering.natural().reverse().isOrdered(sortedItem);
+    }
+
 }

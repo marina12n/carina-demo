@@ -23,8 +23,6 @@ import org.testng.annotations.Test;
 import com.qaprosoft.carina.core.foundation.IAbstractTest;
 import org.testng.asserts.SoftAssert;
 
-import javax.swing.*;
-
 
 public class WebTest implements IAbstractTest {
     private static final String USERNAME = "standard_user";
@@ -63,7 +61,7 @@ public class WebTest implements IAbstractTest {
 
     @Test()
     public void testEmptyUsernameField() {
-        // Test when username
+        // Test when username is empty
         myHomePage.open();
         Assert.assertTrue(myHomePage.isPageOpened(), "Home page is not opened");
         myHomePage.clickLoginBtn();
@@ -75,8 +73,17 @@ public class WebTest implements IAbstractTest {
     }
 
     @Test()
+    public void testWrongCredentials(){
+        myHomePage.open();
+        Assert.assertTrue(myHomePage.isPageOpened(), "Home page is not opened");
+        myHomePage.userLogin("test_user", "test_password");
+        String actualErrorMsg = myHomePage.getLoginError();
+        Assert.assertEquals(actualErrorMsg, "Epic sadface: Username and password do not match any user in this service",
+                "Error's msg isn't the same");
+    }
+    @Test()
     public void testEmptyPasswordField() {
-        // Test when username
+        // Test when password is empty
         myHomePage.open();
         Assert.assertTrue(myHomePage.isPageOpened(), "Home page is not opened");
         myHomePage.typeUsername(USERNAME);
@@ -93,8 +100,8 @@ public class WebTest implements IAbstractTest {
         // Test if items is present
         MyInventoryPage myInventoryPage = inventoryAfterLogin();
         SoftAssert softAssert = new SoftAssert();
+        Assert.assertTrue(myInventoryPage.isPageOpened(), "Inventory page isn't opened");
         softAssert.assertTrue(myInventoryPage.isProductInventoryExist(), "List of products is not exist");
-        softAssert.assertTrue(myInventoryPage.isProductInventoryItemExist(), "Inventory item doesn't exist");
         softAssert.assertTrue(myInventoryPage.isProductTitleExist(), "Product name isn't exist");
         softAssert.assertTrue(myInventoryPage.isAddToCartBtnExist(), "Add to cart btn isn't exist");
         softAssert.assertAll();
@@ -117,17 +124,34 @@ public class WebTest implements IAbstractTest {
     @Test
     public void testCartQuantity(){
         MyInventoryPage myInventoryPage = inventoryAfterLogin();
-        myInventoryPage.clickAddToCart(0);
-        myInventoryPage.clickAddToCart(1);
+        myInventoryPage.clickAddToCart();
+        myInventoryPage.clickAddToCart();
         MyCartPage myCartPage = myInventoryPage.clickCartIcon();
         Assert.assertEquals(myCartPage.getCartItemQuantity(), 2);
     }
 
     @Test
-    public void testDropDownDefaultValue(){
+    public void testVerifyDropDownMenu(){
         MyInventoryPage myInventoryPage = inventoryAfterLogin();
-        Assert.assertTrue(myInventoryPage.isDropDownMenuExist(), "Drop Down menu isn't exist");
-        Assert.assertEquals(myInventoryPage.getDefaultDropDownValue(), "Name (A to Z)");
+        Assert.assertTrue(myInventoryPage.isPageOpened(), "Inventory page isn't opened");
+        Assert.assertEquals(myInventoryPage.getActiveOptionValue(), "NAME (A TO Z)", "Selected option isn't default");
+        myInventoryPage.clickDropDownValue("lohi");
+        Assert.assertEquals(myInventoryPage.getActiveOptionValue(), "PRICE (LOW TO HIGH)", "Selected option isn't equal");
+    }
+
+    @Test
+    public void testDropDownSortVerify(){
+        MyInventoryPage myInventoryPage = inventoryAfterLogin();
+        Assert.assertTrue(myInventoryPage.isPageOpened(), "Inventory page isn't opened");
+        myInventoryPage.clickSortDropDown();
+        myInventoryPage.clickDropDownValue("az");
+        Assert.assertTrue(myInventoryPage.verifyAlphabeticalOrder(), "Items isn't ordered from A to Z");
+        myInventoryPage.clickDropDownValue("za");
+        Assert.assertTrue(myInventoryPage.verifyReverseAlphabeticalOrder(), "Items isn't ordered from Z to A");
+        myInventoryPage.clickDropDownValue("lohi");
+        Assert.assertTrue(myInventoryPage.verifyPriceLowToHigh(), "Items isn't ordered from Low to High price");
+        myInventoryPage.clickDropDownValue("hilo");
+        Assert.assertTrue(myInventoryPage.verifyPriceHighToLow(), "Items isn't ordered from Low to High price");
     }
 
 }
