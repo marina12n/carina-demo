@@ -18,15 +18,12 @@
     "temp_min": "regex:[\\d]+.[\\d]+",
     "temp_max": "regex:[\\d]+.[\\d]+",
     "pressure": "regex:[\\d]+",
-    "humidity": "regex:[\\d]+",
-    "sea_level": "regex:[\\d]+",
-    "grnd_level": "regex:[\\d]+"
+    "humidity": "regex:[\\d]+"
   },
   "visibility": "regex:[\\d]+",
   "wind": {
     "speed": "regex:[\\d]+.[\\d]+",
-    "deg": "regex:[\\d]+",
-    "gust": "regex:[\\d]+.[\\d]+"
+    "deg": "regex:[\\d]+"
   },
   "clouds": {
     "all": "regex:[\\d]+"

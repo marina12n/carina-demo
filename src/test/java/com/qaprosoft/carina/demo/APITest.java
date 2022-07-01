@@ -96,11 +96,11 @@ public class APITest implements IAbstractTest {
         api.validateResponse();
     }
 
-//    @Test()
-//    public void testGetWeather() {
-//      GetWeather api = new GetWeather();
-//      api.callAPIExpectSuccess();
-//      api.validateResponse(JSONCompareMode.STRICT, JsonCompareKeywords.ARRAY_CONTAINS.getKey());
-//      api.validateResponseAgainstSchema("api/weather/_get/rs.schema");
-//}
+    @Test()
+    public void testGetWeather() {
+      GetWeather api = new GetWeather();
+      api.callAPIExpectSuccess();
+      api.validateResponse(JSONCompareMode.STRICT, JsonCompareKeywords.ARRAY_CONTAINS.getKey());
+      api.validateResponseAgainstSchema("api/weather/_get/rs.schema");
+    }
 }

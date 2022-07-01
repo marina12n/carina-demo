@@ -153,5 +153,4 @@ public class WebTest implements IAbstractTest {
         myInventoryPage.clickDropDownValue("hilo");
         Assert.assertTrue(myInventoryPage.verifyPriceHighToLow(), "Items isn't ordered from Low to High price");
     }
-
 }
